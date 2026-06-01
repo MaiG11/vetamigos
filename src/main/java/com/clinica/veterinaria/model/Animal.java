@@ -17,6 +17,9 @@ public class Animal {
     private String raca;
     private String sexo;
     private String dataDeNascimento;
+    
+    private String peso;
+    
     public Long getId() {
         return id;
     }
@@ -52,13 +55,11 @@ public class Animal {
         this.dataDeNascimento = dataDeNascimento;
     }
 
-    
-
-
-
-
-
-
-
+    public String getPeso() {
+        return peso;
+    }
+    public void setPeso(String peso) {
+        this.peso = peso;
+    }
     
 }

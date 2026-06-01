@@ -41,18 +41,19 @@ public class AnimalController {
         animais = animalRepository.findAll();
     }
     model.addAttribute("animais", animais);
+    
+    // Adicionado: cria um objeto Animal vazio para o formulário de cadastro funcionar
+    model.addAttribute("novoAnimal", new Animal());
+    
     return "animais/lista";
    }
    
  @PostMapping("/animais/salvar")
      public String salvarAnimal(HttpSession sessao, @ModelAttribute Animal animal){
-        if (sessao.getAttribute("funcionario") == null)
+        if (sessao.getAttribute("veterinario") == null)
             return "redirect:/login";
            
         animalRepository.save(animal);
 
          return "redirect:/animais";
 }}
-     
-    
-
