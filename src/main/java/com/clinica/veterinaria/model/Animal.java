@@ -1,5 +1,7 @@
 package com.clinica.veterinaria.model;
 
+import java.time.LocalDate;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.GeneratedValue;
@@ -16,12 +18,15 @@ public class Animal {
     private String especie;
     private String raca;
     private String sexo;
-    private String dataDeNascimento;
+    private LocalDate dataDeNascimento;
     
-    private String peso;
+    private Double peso;
     
     public Long getId() {
         return id;
+    }
+    public void setId(Long id) {
+        this.id = id;
     }
    
     public String getNome() {
@@ -48,17 +53,17 @@ public class Animal {
     public void setSexo(String sexo) {
         this.sexo = sexo;
     }
-    public String getDataDeNascimento() {
+    public LocalDate getDataDeNascimento() {
         return dataDeNascimento;
     }
-    public void setDataDeNascimento(String dataDeNascimento) {
+    public void setDataDeNascimento(LocalDate dataDeNascimento) {
         this.dataDeNascimento = dataDeNascimento;
     }
 
-    public String getPeso() {
+    public Double getPeso() {
         return peso;
     }
-    public void setPeso(String peso) {
+    public void setPeso(Double peso) {
         this.peso = peso;
     }
     
