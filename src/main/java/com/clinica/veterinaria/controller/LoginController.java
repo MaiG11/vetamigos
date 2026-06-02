@@ -16,29 +16,32 @@ import jakarta.servlet.http.HttpSession;
 @Controller
 public class LoginController {
     
-@Autowired
-private VeterinarioRepository veterinarioRepository;
+    @Autowired
+    private VeterinarioRepository veterinarioRepository;
 
-@GetMapping("/login")
-public String exibirLogin(){
-    return"login";
-}
-  @PostMapping("/login")
-    public String realizaProcessamentoLogin(
+    @GetMapping("/login")
+    public String exibirLogin() {
+        return "login";
+    }
+
+    @PostMapping("/login")
+    public String realizaProcessamentoLogin
+    (
         @RequestParam String login, 
-        @RequestParam String senha, 
-        HttpSession sessao, 
-        Model model){
+        @RequestParam String senha,
+        HttpSession sessao,
+        Model model
+    ) {
 
-
-        {
-            Veterinario vet = veterinarioRepository.findByLogin(login);
-            if(vet != null && vet.getSenha().equals(senha)){
-                sessao.setAttribute("veterinario", vet);
-                return "redirect:/principal";
-            }
-            model.addAttribute("erro", "Login ou senha inválidos");
+        Veterinario vet = veterinarioRepository.findByLogin(login);
+        // achou o vet neymar true
+        if (vet == null || !vet.getSenha().equals(senha)) {
+            model.addAttribute("erro", "Login ou senha incorretos!");    
             return "login";
-        }
+        } 
+        
+        sessao.setAttribute("veterinario", vet);
+        return "redirect:/principal";
+        
     }
 }
