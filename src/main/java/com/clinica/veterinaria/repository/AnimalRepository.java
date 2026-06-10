@@ -7,4 +7,6 @@ import com.clinica.veterinaria.model.Animal;
 public interface AnimalRepository extends JpaRepository<Animal, Long>{
     
     List<Animal> findByNomeContainingIgnoreCase(String nome);
+
+    List<Animal> findAllByOrderByNomeAsc();
 }

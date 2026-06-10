@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="https://www.thymeleaf.org/">
+<head>
+    <title>Gestão de Consultas - VetAmigos</title>
+</head>
+<body>
+
+    <h1>Gestão de Consultas</h1>
+
+    <a href="/principal">Voltar à página principal</a>
+
+    <div th:if="${alerta}" style="color:red">
+        <p th:text="${alerta}"></p>
+    </div>
+
+    <form action="/consulta/salvar"
+          method="post"
+          th:object="${consulta}">
+
+        <label>Animal</label>
+
+        <select th:field="*{animal}">
+            <option value="">Selecione...</option>
+
+            <option th:each="animal : ${animais}"
+                    th:value="${animal.id}"
+                    th:text="${animal.nome}">
+            </option>
+
+        </select>
+
+        <br/>
+
+        <label>Tipo da Consulta</label>
+
+        <select th:field="*{tipo}">
+            <option value="">Selecione...</option>
+            <option value="ENTRADA">ENTRADA</option>
+            <option value="SAIDA">SAIDA</option>
+        </select>
+
+        <br/>
+
+        <label>Quantidade</label>
+
+        <input type="number"
+               th:field="*{quantidade}"
+               min="1" />
+
+        <br/>
+
+        <label>Data</label>
+
+        <input type="date"
+               th:field="*{data}" />
+
+        <br/>
+
+        <button type="submit">Salvar</button>
+
+    </form>
+
+</body>
+</html>
