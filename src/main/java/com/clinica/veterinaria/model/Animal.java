@@ -1,11 +1,12 @@
 package com.clinica.veterinaria.model;
 
 import java.time.LocalDate;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 public class Animal {
@@ -19,12 +20,17 @@ public class Animal {
     private String raca;
     private String sexo;
     private LocalDate dataDeNascimento;
-
-    private Integer quantidadeConsultas;
-    private Integer quantidadeMinima;
-
     private Double peso;
 
+    @NotNull(message = "A quantidade é obrigatória")
+    @Min(value = 0, message = "Não pode ser negativo")
+    private Integer quantidadeConsultas; // Equivale à "quantidade" do Produto
+
+    @NotNull(message = "O mínimo é obrigatório")
+    @Min(value = 0, message = "Não pode ser negativo")
+    private Integer quantidadeMinima; // Equivale ao "estoqueMinimo" do Produto
+
+    // Getters e Setters
     public Long getId() {
         return id;
     }
@@ -73,6 +79,14 @@ public class Animal {
         this.dataDeNascimento = dataDeNascimento;
     }
 
+    public Double getPeso() {
+        return peso;
+    }
+
+    public void setPeso(Double peso) {
+        this.peso = peso;
+    }
+
     public Integer getQuantidadeConsultas() {
         return quantidadeConsultas;
     }
@@ -87,13 +101,5 @@ public class Animal {
 
     public void setQuantidadeMinima(Integer quantidadeMinima) {
         this.quantidadeMinima = quantidadeMinima;
-    }
-
-    public Double getPeso() {
-        return peso;
-    }
-
-    public void setPeso(Double peso) {
-        this.peso = peso;
     }
 }

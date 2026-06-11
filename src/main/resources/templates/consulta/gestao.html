@@ -1,64 +1,57 @@
 <!DOCTYPE html>
 <html lang="pt-BR" xmlns:th="https://www.thymeleaf.org/">
 <head>
-    <title>Gestão de Consultas - VetAmigos</title>
+    <title>Gestão de Consultas</title>
 </head>
 <body>
-
     <h1>Gestão de Consultas</h1>
+    <a href="/principal">Voltar</a>
 
-    <a href="/principal">Voltar à página principal</a>
-
-    <div th:if="${alerta}" style="color:red">
+    <!-- Alerta aparece quando estoque fica abaixo do mínimo -->
+    <div th:if="${alerta}" style="color: red; font-weight: bold; background: #ffcccc; padding: 10px; margin: 10px 0;">
         <p th:text="${alerta}"></p>
     </div>
 
-    <form action="/consulta/salvar"
-          method="post"
-          th:object="${consulta}">
-
-        <label>Animal</label>
-
-        <select th:field="*{animal}">
+    <h2>Registrar Movimentação</h2>
+    <form action="/consulta/salvar" method="post" th:object="${consulta}">
+        
+        <label>Animal:</label>
+        <select th:field="*{animal}" required>
             <option value="">Selecione...</option>
+            <option th:each="animal : ${animais}" th:value="${animal.id}" th:text="${animal.nome}"></option>
+        </select><br/>
 
-            <option th:each="animal : ${animais}"
-                    th:value="${animal.id}"
-                    th:text="${animal.nome}">
-            </option>
-
-        </select>
-
-        <br/>
-
-        <label>Tipo da Consulta</label>
-
-        <select th:field="*{tipo}">
+        <!--  Select de tipo tem ENTRADA e SAIDA -->
+        <label>Tipo:</label>
+        <select th:field="*{tipo}" required>
             <option value="">Selecione...</option>
             <option value="ENTRADA">ENTRADA</option>
             <option value="SAIDA">SAIDA</option>
-        </select>
+        </select><br/>
 
-        <br/>
+        <label>Quantidade:</label>
+        <input type="number" th:field="*{quantidade}" min="1" required/><br/>
 
-        <label>Quantidade</label>
-
-        <input type="number"
-               th:field="*{quantidade}"
-               min="1" />
-
-        <br/>
-
-        <label>Data</label>
-
-        <input type="date"
-               th:field="*{data}" />
-
-        <br/>
+        <!-- Campo data é type="date" -->
+        <label>Data:</label>
+        <input type="date" th:field="*{data}" required/><br/>
 
         <button type="submit">Salvar</button>
-
     </form>
 
+    <hr/>
+    <h2>Lista de Animais (Ordem Alfabética)</h2>
+    <table border="1">
+        <tr>
+            <th>Nome</th>
+            <th>Consultas Disponíveis</th>
+            <th>Mínimo</th>
+        </tr>
+        <tr th:each="animal : ${animais}">
+            <td th:text="${animal.nome}"></td>
+            <td th:text="${animal.quantidadeConsultas}"></td>
+            <td th:text="${animal.quantidadeMinima}"></td>
+        </tr>
+    </table>
 </body>
 </html>

@@ -1,81 +1,39 @@
-<!doctype html>
-<html lang="pt-br" xmlns:th="https://www.thymeleaf.org/">
-  <head>
-    <title>Animais - Vetamigos</title>
-  </head>
-  <body>
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="https://www.thymeleaf.org/">
+<head>
+    <title>Lista de Animais</title>
+</head>
+<body>
     <h1>Cadastro de Animais</h1>
-    <a href="/principal">Voltar a tela principal</a>
+    <a href="/principal">Voltar</a>
 
     <form method="get" action="/animais">
-      <input
-        type="text"
-        name="buscaAnimal"
-        th:value="${buscaAnimal}"
-        placeholder="Buscar animal..."
-      />
-      <button type="submit">Buscar Animais</button>
+        <input type="text" name="buscaAnimal" placeholder="Buscar animal..."/>
+        <button type="submit">Buscar</button>
     </form>
 
     <table border="1">
-      <tr>
-        <th>Nome</th>
-        <th>Espécie</th>
-        <th>Raça</th>
-        <th>Sexo</th>
-        <th>Data de Nascimento</th>
-        <th>Peso</th>
-        <th>Ações</th>
-      </tr>
-      <tr th:each="animal : ${animais}">
-        <td th:text="${animal.nome}"></td>
-        <td th:text="${animal.especie}"></td>
-        <td th:text="${animal.raca}"></td>
-        <td th:text="${animal.sexo}"></td>
-        <td th:text="${animal.dataDeNascimento}">
-        <td th:text="${animal.peso}"> 
-        </td>
-        <td>
-          <!-- ação de editar.. -->
-          <a th:href="@{/animais/editar/{id}(id=${animal.id})}">Editar</a>
-
-          <!-- ação de excluir.. -->
-          <form
-            th:action="@{/animais/deletar/{id}(id=${animal.id})}"
-            method="post"
-          >
-            <button
-              type="submit"
-              onsubmit="return confirm('Deseja excluir esse produto?');"
-            >
-              Excluir
-            </button>
-          </form>
-        </td>
-      </tr>
+        <tr>
+            <th>Nome</th>
+            <th>Espécie</th>
+            <th>Qtd. Consultas</th>
+            <th>Mínimo</th>
+            <th>Ações</th>
+        </tr>
+        <tr th:each="animal : ${animais}">
+            <td th:text="${animal.nome}"></td>
+            <td th:text="${animal.especie}"></td>
+            <td th:text="${animal.quantidadeConsultas}"></td>
+            <td th:text="${animal.quantidadeMinima}"></td>
+            <td>
+                <a th:href="@{/animais/editar/{id}(id=${animal.id})}">Editar</a>
+                <form th:action="@{/animais/deletar/{id}(id=${animal.id})}" method="post" style="display:inline;">
+                    <button type="submit" onclick="return confirm('Deseja excluir?');">Excluir</button>
+                </form>
+            </td>
+        </tr>
     </table>
-
-    <h2>Novo Animal :)</h2>
-    <form method="post" action="/animais/salvar">
-      <label>Nome</label>
-      <input type="text" name="nome" /><br />
-
-      <label>Espécie</label>
-      <input type="text" name="especie" /><br />
-
-      <label>Raça</label>
-      <input type="text" name="raca" /><br />
-
-      <label>Sexo</label>
-      <input type="text" name="sexo" /><br />
-
-      <label>Data de Nascimento</label>
-      <input type="date" name="dataDeNascimento" /><br />
-
-      <label>Peso</label>
-      <input type="number" name="peso" step="0.01" /><br />
-
-      <button type="submit">Criar Animal</button>
-    </form>
-  </body>
+    <br/>
+    <a href="/animais/novo">Novo Animal</a>
+</body>
 </html>

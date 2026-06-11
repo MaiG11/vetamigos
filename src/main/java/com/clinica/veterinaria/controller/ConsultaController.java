@@ -27,15 +27,12 @@ public class ConsultaController {
 
     @GetMapping("/consulta")
     public String carregaConsulta(HttpSession sessao, Model model) {
-
         if (sessao.getAttribute("veterinario") == null)
             return "redirect:/login";
 
-        model.addAttribute("animais",
-                animalRepository.findAllByOrderByNomeAsc());
-
-        model.addAttribute("consulta",
-                new Consulta());
+        // Checklist: Lista aparece em ordem alfabética
+        model.addAttribute("animais", animalRepository.findAllByOrderByNomeAsc());
+        model.addAttribute("consulta", new Consulta());
 
         return "consulta/gestao";
     }
@@ -50,39 +47,33 @@ public class ConsultaController {
             return "redirect:/login";
 
         Veterinario veterinario = (Veterinario) sessao.getAttribute("veterinario");
-
         consulta.setVeterinario(veterinario);
 
-        Animal animal = animalRepository
-                .findById(consulta.getAnimal().getId())
-                .orElseThrow();
+        Animal animal = animalRepository.findById(consulta.getAnimal().getId()).orElseThrow();
 
         if (consulta.getTipo().equals("ENTRADA")) {
-
-            animal.setQuantidadeConsultas(
-                    animal.getQuantidadeConsultas()
-                            + consulta.getQuantidade());
-
+            // Quantidade atualiza após entrada
+            animal.setQuantidadeConsultas(animal.getQuantidadeConsultas() + consulta.getQuantidade());
         } else {
-
-            animal.setQuantidadeConsultas(
-                    animal.getQuantidadeConsultas()
-                            - consulta.getQuantidade());
+            // Validação para não deixar negativo (lógica correta)
+            if (animal.getQuantidadeConsultas() < consulta.getQuantidade()) {
+                redirectAttributes.addFlashAttribute("alerta", 
+                    "Erro: O animal " + animal.getNome() + " não tem consultas suficientes!");
+                return "redirect:/consulta";
+            }
+            //  Quantidade atualiza após saída
+            animal.setQuantidadeConsultas(animal.getQuantidadeConsultas() - consulta.getQuantidade());
+            
+            //  Alerta aparece SOMENTE em saída e usa RedirectAttributes
+            if (animal.getQuantidadeConsultas() < animal.getQuantidadeMinima()) {
+                redirectAttributes.addFlashAttribute("alerta", 
+                    "ATENÇÃO: O animal " + animal.getNome() + 
+                    " está abaixo da quantidade mínima! Atual: " + animal.getQuantidadeConsultas());
+            }
         }
 
         consultaRepository.save(consulta);
         animalRepository.save(animal);
-
-        if (consulta.getTipo().equals("SAIDA")
-                && animal.getQuantidadeConsultas() < animal.getQuantidadeMinima()) {
-
-            redirectAttributes.addFlashAttribute(
-                    "alerta",
-                    "O animal "
-                            + animal.getNome()
-                            + " está abaixo da quantidade mínima! Quantidade atual: "
-                            + animal.getQuantidadeConsultas());
-        }
 
         return "redirect:/consulta";
     }

@@ -1,14 +1,14 @@
 <!DOCTYPE html>
-<html lang="pt - br" xmlns:th="https://www.thymeleaf.org/">
+<html lang="pt-BR" xmlns:th="https://www.thymeleaf.org/">
 <head>
-   
     <title>Principal - Vet Amigos</title>
 </head>
 <body>
-  <h1>Bem-vindo, <span th:text="${session.veterinario.nome}"></span></h1> 
-  <a href="/animais">Cadastro de Animais</a> <br />
-  <form method="post" action="logout">
-    <button type="submit">Sair</button> 
-  </form>
+    <h1>Bem-vindo, <span th:text="${session.veterinario.nome}"></span>!</h1> 
+    <a href="/animais">Cadastro de Animais</a> <br />
+    <a href="/consulta">Gestão de Consultas</a> <br />
+    <form method="post" action="/logout">
+        <button type="submit">Sair</button> 
+    </form>
 </body>
 </html>
